@@ -141,29 +141,29 @@ always_ff @( posedge clk_i, negedge rst_n )
 begin : AES_INPUT_REGISTERS
     if(!rst_n)
     begin
-        valid_input   = 'b0;
-        rs2           = 'b0;
-        rs1           = 'b0;
-        bs            = 'b0;
-        shareA_masked = 'b0;
-        shareB_mask   = 'b0;
-        randombits    = 'b0;
-        instr_id      = 'b0;
-        decrypt       = 'b0;
-        middle_round  = 'b0;
+        valid_input   <= 'b0;
+        rs2           <= 'b0;
+        rs1           <= 'b0;
+        bs            <= 'b0;
+        shareA_masked <= 'b0;
+        shareB_mask   <= 'b0;
+        randombits    <= 'b0;
+        instr_id      <= 'b0;
+        decrypt       <= 'b0;
+        middle_round  <= 'b0;
     end else begin
         if(sbox_ready || !valid_input) 
         begin
-            valid_input   = valid_i;
-            rs2           = rs2_i;
-            rs1           = rs1_i;
-            bs            = bs_i;
-            shareA_masked = shareA_masked_i;
-            shareB_mask   = shareB_mask_i;
-            randombits    = randombits_i[25:8];
-            instr_id      = instr_id_i;
-            decrypt       = decrypt_i;
-            middle_round  = middle_round_i;
+            valid_input   <= valid_i;
+            rs2           <= rs2_i;
+            rs1           <= rs1_i;
+            bs            <= bs_i;
+            shareA_masked <= shareA_masked_i;
+            shareB_mask   <= shareB_mask_i;
+            randombits    <= randombits_i[25:8];
+            instr_id      <= instr_id_i;
+            decrypt       <= decrypt_i;
+            middle_round  <= middle_round_i;
         end
     end    
 end

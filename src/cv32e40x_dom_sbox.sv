@@ -487,139 +487,139 @@ endfunction
 always_comb 
 begin : ISOMORPHIC_TRANS
     if(decrypt_i) begin
-        shareA_isomorphic_trans = isomorphic_mapping(
+        shareA_isomorphic_trans <= isomorphic_mapping(
                                     inverse_affine_transformation_addition(
                                         inverse_affine_transformation_multiplication(shareA_in)));
 
-        shareB_isomorphic_trans = isomorphic_mapping(
+        shareB_isomorphic_trans <= isomorphic_mapping(
                                     inverse_affine_transformation_multiplication(shareB_in));
     end else begin
-        shareA_isomorphic_trans = isomorphic_mapping(shareA_in);
-        shareB_isomorphic_trans = isomorphic_mapping(shareB_in);
+        shareA_isomorphic_trans <= isomorphic_mapping(shareA_in);
+        shareB_isomorphic_trans <= isomorphic_mapping(shareB_in);
     end
 end
 
 always_ff @( posedge clk_i, negedge rst_n ) begin : SBOX_PIPELINE_REGISTERS
     if(!rst_n) begin 
-        stage2_valid = 'b0;
-        stage3_valid = 'b0;
-        stage4_valid = 'b0;
-        stage5_valid = 'b0;
-        stage6_valid = 'b0; 
+        stage2_valid <= 'b0;
+        stage3_valid <= 'b0;
+        stage4_valid <= 'b0;
+        stage5_valid <= 'b0;
+        stage6_valid <= 'b0; 
     end else 
     begin
         if(STAGE_6_RDY)
         begin
             //Register Between stage 5 & 6
 
-            stage6_valid                       = stage5_valid;
-            stage6_instr_id                    = stage5_instr_id;
-            stage6_decrypt                     = stage5_decrypt;
-            stage6_middle_round                = stage5_middle_round;
-            stage6_bs                          = stage5_bs;
-            stage6_rs1                         = stage5_rs1;
+            stage6_valid                       <= stage5_valid;
+            stage6_instr_id                    <= stage5_instr_id;
+            stage6_decrypt                     <= stage5_decrypt;
+            stage6_middle_round                <= stage5_middle_round;
+            stage6_bs                          <= stage5_bs;
+            stage6_rs1                         <= stage5_rs1;
 
 
-            stage6_multiplication_dom_gf16_high_reg = stage5_multiplication_high_gf16_before_reg;
-            stage6_multiplication_dom_gf16_low_reg  = stage5_multiplication_low_gf16_before_reg;
+            stage6_multiplication_dom_gf16_high_reg <= stage5_multiplication_high_gf16_before_reg;
+            stage6_multiplication_dom_gf16_low_reg  <= stage5_multiplication_low_gf16_before_reg;
         end
         if(STAGE_5_RDY)
         begin
             //Register Between stage 4 & 5
 
-            stage5_valid                       = stage4_valid;
-            stage5_instr_id                    = stage4_instr_id;
-            stage5_decrypt                     = stage4_decrypt;
-            stage5_randombits                  = stage4_randombits;
-            stage5_middle_round                = stage4_middle_round;
-            stage5_bs                          = stage4_bs;
-            stage5_rs1                         = stage4_rs1;
+            stage5_valid                       <= stage4_valid;
+            stage5_instr_id                    <= stage4_instr_id;
+            stage5_decrypt                     <= stage4_decrypt;
+            stage5_randombits                  <= stage4_randombits;
+            stage5_middle_round                <= stage4_middle_round;
+            stage5_bs                          <= stage4_bs;
+            stage5_rs1                         <= stage4_rs1;
 
-            stage5_result_h_gf4_reg            = stage4_result_h_before_reg_gf4;             
-            stage5_result_l_gf4_reg            = stage4_result_l_before_reg_gf4;
+            stage5_result_h_gf4_reg            <= stage4_result_h_before_reg_gf4;             
+            stage5_result_l_gf4_reg            <= stage4_result_l_before_reg_gf4;
 
-            stage5_shareA_nibble_high_reg      = stage4_shareA_nibble_high_reg;
-            stage5_shareA_nibble_low_reg       = stage4_shareA_nibble_low_reg;
-            stage5_shareB_nibble_high_reg      = stage4_shareB_nibble_high_reg;
-            stage5_shareB_nibble_low_reg       = stage4_shareB_nibble_low_reg;
+            stage5_shareA_nibble_high_reg      <= stage4_shareA_nibble_high_reg;
+            stage5_shareA_nibble_low_reg       <= stage4_shareA_nibble_low_reg;
+            stage5_shareB_nibble_high_reg      <= stage4_shareB_nibble_high_reg;
+            stage5_shareB_nibble_low_reg       <= stage4_shareB_nibble_low_reg;
         end
 
         if(STAGE_4_RDY)
         begin
             //Register Between stage 3 & 4
 
-            stage4_valid                       = stage3_valid;
-            stage4_instr_id                    = stage3_instr_id;
-            stage4_decrypt                     = stage3_decrypt;
-            stage4_randombits                  = stage3_randombits;
-            stage4_middle_round                = stage3_middle_round;
-            stage4_bs                          = stage3_bs;
-            stage4_rs1                         = stage3_rs1;
+            stage4_valid                       <= stage3_valid;
+            stage4_instr_id                    <= stage3_instr_id;
+            stage4_decrypt                     <= stage3_decrypt;
+            stage4_randombits                  <= stage3_randombits;
+            stage4_middle_round                <= stage3_middle_round;
+            stage4_bs                          <= stage3_bs;
+            stage4_rs1                         <= stage3_rs1;
 
-            stage4_multiplication_dom_gf4_reg  = stage3_multiplication_dom_gf4_before_reg;
-            stage4_shareA_square_scale_gf4_reg = stage3_shareA_square_scale_gf4;
-            stage4_shareB_square_scale_gf4_reg = stage3_shareB_square_scale_gf4;
+            stage4_multiplication_dom_gf4_reg  <= stage3_multiplication_dom_gf4_before_reg;
+            stage4_shareA_square_scale_gf4_reg <= stage3_shareA_square_scale_gf4;
+            stage4_shareB_square_scale_gf4_reg <= stage3_shareB_square_scale_gf4;
 
-            stage4_shareA_sum_multiply_gf16_reg         = stage3_shareA_sum_multiply_gf16;
-            stage4_shareB_sum_multiply_gf16_reg         = stage3_shareB_sum_multiply_gf16;
+            stage4_shareA_sum_multiply_gf16_reg         <= stage3_shareA_sum_multiply_gf16;
+            stage4_shareB_sum_multiply_gf16_reg         <= stage3_shareB_sum_multiply_gf16;
 
-            stage4_shareA_nibble_high_reg      = stage3_shareA_nibble_high_reg;
-            stage4_shareA_nibble_low_reg       = stage3_shareA_nibble_low_reg;
-            stage4_shareB_nibble_high_reg      = stage3_shareB_nibble_high_reg;
-            stage4_shareB_nibble_low_reg       = stage3_shareB_nibble_low_reg;
+            stage4_shareA_nibble_high_reg      <= stage3_shareA_nibble_high_reg;
+            stage4_shareA_nibble_low_reg       <= stage3_shareA_nibble_low_reg;
+            stage4_shareB_nibble_high_reg      <= stage3_shareB_nibble_high_reg;
+            stage4_shareB_nibble_low_reg       <= stage3_shareB_nibble_low_reg;
         end
 
         if(STAGE_3_RDY)
         begin
             //Register Between stage 2 & 3
-            stage3_valid                       = stage2_valid;
-            stage3_instr_id                    = stage2_instr_id;
-            stage3_decrypt                     = stage2_decrypt;
-            stage3_randombits                  = stage2_randombits;
-            stage3_middle_round                = stage2_middle_round;
-            stage3_bs                          = stage2_bs;
-            stage3_rs1                         = stage2_rs1;
+            stage3_valid                       <= stage2_valid;
+            stage3_instr_id                    <= stage2_instr_id;
+            stage3_decrypt                     <= stage2_decrypt;
+            stage3_randombits                  <= stage2_randombits;
+            stage3_middle_round                <= stage2_middle_round;
+            stage3_bs                          <= stage2_bs;
+            stage3_rs1                         <= stage2_rs1;
 
-            stage3_multiplication_dom_gf16_reg = stage2_multiplication_dom_gf16_before_reg;
-            stage3_shareA_square_scale_reg     = stage2_shareA_square_scale;
-            stage3_shareB_square_scale_reg     = stage2_shareB_square_scale;
+            stage3_multiplication_dom_gf16_reg <= stage2_multiplication_dom_gf16_before_reg;
+            stage3_shareA_square_scale_reg     <= stage2_shareA_square_scale;
+            stage3_shareB_square_scale_reg     <= stage2_shareB_square_scale;
 
-            stage3_shareA_nibble_high_reg      = stage2_shareA_nibble_high_reg;
-            stage3_shareA_nibble_low_reg       = stage2_shareA_nibble_low_reg;
-            stage3_shareB_nibble_high_reg      = stage2_shareB_nibble_high_reg;
-            stage3_shareB_nibble_low_reg       = stage2_shareB_nibble_low_reg;
+            stage3_shareA_nibble_high_reg      <= stage2_shareA_nibble_high_reg;
+            stage3_shareA_nibble_low_reg       <= stage2_shareA_nibble_low_reg;
+            stage3_shareB_nibble_high_reg      <= stage2_shareB_nibble_high_reg;
+            stage3_shareB_nibble_low_reg       <= stage2_shareB_nibble_low_reg;
         end
 
         if(STAGE_2_RDY)
         begin
             if(valid_i) begin
                 //Register Between stage 1 & 2
-                stage2_valid                       = valid_i;
-                stage2_instr_id                    = instr_id_i;
-                stage2_decrypt                     = decrypt_i;
-                stage2_randombits                  = randombits_i;
-                stage2_middle_round                = middle_round_i;
-                stage2_bs                          = bs_i;
-                stage2_rs1                         = rs1_i;
+                stage2_valid                       <= valid_i;
+                stage2_instr_id                    <= instr_id_i;
+                stage2_decrypt                     <= decrypt_i;
+                stage2_randombits                  <= randombits_i;
+                stage2_middle_round                <= middle_round_i;
+                stage2_bs                          <= bs_i;
+                stage2_rs1                         <= rs1_i;
 
-                stage2_shareA_nibble_high_reg      = shareA_isomorphic_trans[7:4];
-                stage2_shareA_nibble_low_reg       = shareA_isomorphic_trans[3:0];
-                stage2_shareB_nibble_high_reg      = shareB_isomorphic_trans[7:4];
-                stage2_shareB_nibble_low_reg       = shareB_isomorphic_trans[3:0];
+                stage2_shareA_nibble_high_reg      <= shareA_isomorphic_trans[7:4];
+                stage2_shareA_nibble_low_reg       <= shareA_isomorphic_trans[3:0];
+                stage2_shareB_nibble_high_reg      <= shareB_isomorphic_trans[7:4];
+                stage2_shareB_nibble_low_reg       <= shareB_isomorphic_trans[3:0];
             end else begin
                 //Register Between stage 1 & 2
-                stage2_valid                       = 'b0;
-                stage2_instr_id                    = 'b0;
-                stage2_decrypt                     = 'b0;
-                stage2_randombits                  = 'b0;
-                stage2_middle_round                = 'b0;
-                stage2_bs                          = 'b0;
-                stage2_rs1                         = 'b0;
+                stage2_valid                       <= 'b0;
+                stage2_instr_id                    <= 'b0;
+                stage2_decrypt                     <= 'b0;
+                stage2_randombits                  <= 'b0;
+                stage2_middle_round                <= 'b0;
+                stage2_bs                          <= 'b0;
+                stage2_rs1                         <= 'b0;
 
-                stage2_shareA_nibble_high_reg      = 'b0;
-                stage2_shareA_nibble_low_reg       = 'b0;
-                stage2_shareB_nibble_high_reg      = 'b0;
-                stage2_shareB_nibble_low_reg       = 'b0;
+                stage2_shareA_nibble_high_reg      <= 'b0;
+                stage2_shareA_nibble_low_reg       <= 'b0;
+                stage2_shareB_nibble_high_reg      <= 'b0;
+                stage2_shareB_nibble_low_reg       <= 'b0;
             end
 
         end
@@ -629,13 +629,13 @@ end
 always_comb 
 begin: GF256_INVERSION_PIPELINED
     //-------------------Stage 2---------------------------------
-    stage2_shareA_sum_nibbles = stage2_shareA_nibble_high_reg ^ stage2_shareA_nibble_low_reg;
-    stage2_shareB_sum_nibbles = stage2_shareB_nibble_high_reg ^ stage2_shareB_nibble_low_reg;
+    stage2_shareA_sum_nibbles <= stage2_shareA_nibble_high_reg ^ stage2_shareA_nibble_low_reg;
+    stage2_shareB_sum_nibbles <= stage2_shareB_nibble_high_reg ^ stage2_shareB_nibble_low_reg;
 
-    stage2_shareA_square_scale = square_scale_gf16(stage2_shareA_sum_nibbles);
-    stage2_shareB_square_scale = square_scale_gf16(stage2_shareB_sum_nibbles);
+    stage2_shareA_square_scale <= square_scale_gf16(stage2_shareA_sum_nibbles);
+    stage2_shareB_square_scale <= square_scale_gf16(stage2_shareB_sum_nibbles);
 
-    stage2_multiplication_dom_gf16_before_reg = dom_multiplication_before_reg_gf16(stage2_shareA_nibble_low_reg, 
+    stage2_multiplication_dom_gf16_before_reg <= dom_multiplication_before_reg_gf16(stage2_shareA_nibble_low_reg, 
                                                                                    stage2_shareA_nibble_high_reg,
                                                                                    stage2_shareB_nibble_low_reg, 
                                                                                    stage2_shareB_nibble_high_reg,
@@ -643,50 +643,50 @@ begin: GF256_INVERSION_PIPELINED
     
 
     //-------------------Stage 3 & 4---------------------------------
-    stage3_multiplication_dom_gf16_after_reg = dom_multiplication_after_reg_gf16(stage3_multiplication_dom_gf16_reg);
+    stage3_multiplication_dom_gf16_after_reg <= dom_multiplication_after_reg_gf16(stage3_multiplication_dom_gf16_reg);
 
-    stage3_shareA_sum_multiply_gf16 = stage3_multiplication_dom_gf16_after_reg.shareA ^ stage3_shareA_square_scale_reg;
-    stage3_shareB_sum_multiply_gf16 = stage3_multiplication_dom_gf16_after_reg.shareB ^ stage3_shareB_square_scale_reg;
+    stage3_shareA_sum_multiply_gf16 <= stage3_multiplication_dom_gf16_after_reg.shareA ^ stage3_shareA_square_scale_reg;
+    stage3_shareB_sum_multiply_gf16 <= stage3_multiplication_dom_gf16_after_reg.shareB ^ stage3_shareB_square_scale_reg;
 
     // GF16 inversion, see combinatoric block below
     //-------------------Stage 5---------------------------------
 
-    stage5_shareA_inverted_gf16 = stage5_inversion_gf16_result.shareA;
-    stage5_shareB_inverted_gf16 = stage5_inversion_gf16_result.shareB;
+    stage5_shareA_inverted_gf16 <= stage5_inversion_gf16_result.shareA;
+    stage5_shareB_inverted_gf16 <= stage5_inversion_gf16_result.shareB;
 
-    stage5_multiplication_high_gf16_before_reg = dom_multiplication_before_reg_gf16(stage5_shareA_nibble_low_reg, 
+    stage5_multiplication_high_gf16_before_reg <= dom_multiplication_before_reg_gf16(stage5_shareA_nibble_low_reg, 
                                                                                stage5_shareA_inverted_gf16, 
                                                                                stage5_shareB_nibble_low_reg, 
                                                                                stage5_shareB_inverted_gf16,
                                                                                stage5_randombits[3:0]
                                                                                );
-    stage5_multiplication_low_gf16_before_reg  = dom_multiplication_before_reg_gf16(stage5_shareA_nibble_high_reg, 
+    stage5_multiplication_low_gf16_before_reg  <= dom_multiplication_before_reg_gf16(stage5_shareA_nibble_high_reg, 
                                                                                stage5_shareA_inverted_gf16, 
                                                                                stage5_shareB_nibble_high_reg, 
                                                                                stage5_shareB_inverted_gf16,
                                                                                stage5_randombits[7:4]);
     //-------------------Stage 6---------------------------------
-    stage6_multiplication_high_gf16_after_reg  = dom_multiplication_after_reg_gf16(stage6_multiplication_dom_gf16_high_reg);
-    stage6_multiplication_low_gf16_after_reg   = dom_multiplication_after_reg_gf16(stage6_multiplication_dom_gf16_low_reg);
+    stage6_multiplication_high_gf16_after_reg  <= dom_multiplication_after_reg_gf16(stage6_multiplication_dom_gf16_high_reg);
+    stage6_multiplication_low_gf16_after_reg   <= dom_multiplication_after_reg_gf16(stage6_multiplication_dom_gf16_low_reg);
     
-    stage6_shareA_inversion_gf256_result = {stage6_multiplication_high_gf16_after_reg.shareA, stage6_multiplication_low_gf16_after_reg.shareA};
-    stage6_shareB_inversion_gf256_result = {stage6_multiplication_high_gf16_after_reg.shareB, stage6_multiplication_low_gf16_after_reg.shareB};
+    stage6_shareA_inversion_gf256_result <= {stage6_multiplication_high_gf16_after_reg.shareA, stage6_multiplication_low_gf16_after_reg.shareA};
+    stage6_shareB_inversion_gf256_result <= {stage6_multiplication_high_gf16_after_reg.shareB, stage6_multiplication_low_gf16_after_reg.shareB};
 end
 
 always_comb 
 begin : GF16_INVERSION_PIPELINED
     //-------------------Stage 3-----------------------------------
 
-    stage3_shareA_sum_gf4 = stage3_shareA_sum_multiply_gf16[3:2] ^ stage3_shareA_sum_multiply_gf16[1:0];
-    stage3_shareB_sum_gf4 = stage3_shareB_sum_multiply_gf16[3:2] ^ stage3_shareB_sum_multiply_gf16[1:0];
+    stage3_shareA_sum_gf4 <= stage3_shareA_sum_multiply_gf16[3:2] ^ stage3_shareA_sum_multiply_gf16[1:0];
+    stage3_shareB_sum_gf4 <= stage3_shareB_sum_multiply_gf16[3:2] ^ stage3_shareB_sum_multiply_gf16[1:0];
 
-    stage3_shareA_square_gf4       = square_gf4(stage3_shareA_sum_gf4);
-    stage3_shareB_square_gf4       = square_gf4(stage3_shareB_sum_gf4);
+    stage3_shareA_square_gf4       <= square_gf4(stage3_shareA_sum_gf4);
+    stage3_shareB_square_gf4       <= square_gf4(stage3_shareB_sum_gf4);
 
-    stage3_shareA_square_scale_gf4 = scale_N_gf4(stage3_shareA_square_gf4);
-    stage3_shareB_square_scale_gf4 = scale_N_gf4(stage3_shareB_square_gf4);
+    stage3_shareA_square_scale_gf4 <= scale_N_gf4(stage3_shareA_square_gf4);
+    stage3_shareB_square_scale_gf4 <= scale_N_gf4(stage3_shareB_square_gf4);
 
-    stage3_multiplication_dom_gf4_before_reg = dom_multiplication_before_reg_gf4(stage3_shareA_sum_multiply_gf16[1:0],
+    stage3_multiplication_dom_gf4_before_reg <= dom_multiplication_before_reg_gf4(stage3_shareA_sum_multiply_gf16[1:0],
                                                                                  stage3_shareA_sum_multiply_gf16[3:2], 
                                                                                  stage3_shareB_sum_multiply_gf16[1:0], 
                                                                                  stage3_shareB_sum_multiply_gf16[3:2],
@@ -694,26 +694,26 @@ begin : GF16_INVERSION_PIPELINED
                                                                                  );
 
     //-------------------Stage 4-----------------------------------
-    stage4_multiplication_dom_gf4_after_reg  = dom_multiplication_after_reg_gf4(stage4_multiplication_dom_gf4_reg);
+    stage4_multiplication_dom_gf4_after_reg  <= dom_multiplication_after_reg_gf4(stage4_multiplication_dom_gf4_reg);
 
-    stage4_shareA_multiply_gf4 = stage4_multiplication_dom_gf4_after_reg.shareA;
-    stage4_shareB_multiply_gf4 = stage4_multiplication_dom_gf4_after_reg.shareB;
+    stage4_shareA_multiply_gf4 <= stage4_multiplication_dom_gf4_after_reg.shareA;
+    stage4_shareB_multiply_gf4 <= stage4_multiplication_dom_gf4_after_reg.shareB;
 
-    stage4_shareA_sum_multiply_gf4 = stage4_shareA_multiply_gf4 ^ stage4_shareA_square_scale_gf4_reg;
-    stage4_shareB_sum_multiply_gf4 = stage4_shareB_multiply_gf4 ^ stage4_shareB_square_scale_gf4_reg;
+    stage4_shareA_sum_multiply_gf4 <= stage4_shareA_multiply_gf4 ^ stage4_shareA_square_scale_gf4_reg;
+    stage4_shareB_sum_multiply_gf4 <= stage4_shareB_multiply_gf4 ^ stage4_shareB_square_scale_gf4_reg;
 
-    stage4_shareA_inverted_sum_gf4 = inverse_gf4(stage4_shareA_sum_multiply_gf4);
-    stage4_shareB_inverted_sum_gf4 = inverse_gf4(stage4_shareB_sum_multiply_gf4);
+    stage4_shareA_inverted_sum_gf4 <= inverse_gf4(stage4_shareA_sum_multiply_gf4);
+    stage4_shareB_inverted_sum_gf4 <= inverse_gf4(stage4_shareB_sum_multiply_gf4);
 
 
-    stage4_result_h_before_reg_gf4 = dom_multiplication_before_reg_gf4(stage4_shareA_sum_multiply_gf16_reg[1:0], 
+    stage4_result_h_before_reg_gf4 <= dom_multiplication_before_reg_gf4(stage4_shareA_sum_multiply_gf16_reg[1:0], 
                                                                        stage4_shareA_inverted_sum_gf4, 
                                                                        stage4_shareB_sum_multiply_gf16_reg[1:0], 
                                                                        stage4_shareB_inverted_sum_gf4,
                                                                        stage4_randombits[15:14]
                                                                        );
 
-    stage4_result_l_before_reg_gf4 = dom_multiplication_before_reg_gf4(stage4_shareA_sum_multiply_gf16_reg[3:2], 
+    stage4_result_l_before_reg_gf4 <= dom_multiplication_before_reg_gf4(stage4_shareA_sum_multiply_gf16_reg[3:2], 
                                                                        stage4_shareA_inverted_sum_gf4, 
                                                                        stage4_shareB_sum_multiply_gf16_reg[3:2], 
                                                                        stage4_shareB_inverted_sum_gf4,
@@ -722,25 +722,25 @@ begin : GF16_INVERSION_PIPELINED
     
     //-------------------(Parts of) Stage 5---------------------------
     
-    stage5_result_h_after_reg_gf4  = dom_multiplication_after_reg_gf4(stage5_result_h_gf4_reg);
-    stage5_result_l_after_reg_gf4  = dom_multiplication_after_reg_gf4(stage5_result_l_gf4_reg);
+    stage5_result_h_after_reg_gf4  <= dom_multiplication_after_reg_gf4(stage5_result_h_gf4_reg);
+    stage5_result_l_after_reg_gf4  <= dom_multiplication_after_reg_gf4(stage5_result_l_gf4_reg);
 
-    stage5_inversion_gf16_result.shareA = {stage5_result_h_after_reg_gf4.shareA, stage5_result_l_after_reg_gf4.shareA};
-    stage5_inversion_gf16_result.shareB = {stage5_result_h_after_reg_gf4.shareB, stage5_result_l_after_reg_gf4.shareB};
+    stage5_inversion_gf16_result.shareA <= {stage5_result_h_after_reg_gf4.shareA, stage5_result_l_after_reg_gf4.shareA};
+    stage5_inversion_gf16_result.shareB <= {stage5_result_h_after_reg_gf4.shareB, stage5_result_l_after_reg_gf4.shareB};
 end
 
 
 always_comb begin
     //-------------------Stage 6---------------------------------
     if(stage6_decrypt) begin
-        shareA_out = inverse_isomorphic_mapping(stage6_shareA_inversion_gf256_result);
-        shareB_out = inverse_isomorphic_mapping(stage6_shareB_inversion_gf256_result);
+        shareA_out <= inverse_isomorphic_mapping(stage6_shareA_inversion_gf256_result);
+        shareB_out <= inverse_isomorphic_mapping(stage6_shareB_inversion_gf256_result);
     end else begin
-        shareA_out = affine_transformation_addition(
+        shareA_out <= affine_transformation_addition(
                         affine_transformation_multiplication(
                             inverse_isomorphic_mapping(stage6_shareA_inversion_gf256_result)));
                             
-        shareB_out = affine_transformation_multiplication(
+        shareB_out <= affine_transformation_multiplication(
                         inverse_isomorphic_mapping(stage6_shareB_inversion_gf256_result));
     end
 end
